@@ -8,11 +8,13 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import net.studio.estemon.config.GameConfig;
+import net.studio.estemon.entity.Obstacle;
 import net.studio.estemon.entity.Player;
 import net.studio.estemon.util.GdxUtils;
 import net.studio.estemon.util.ViewportUtils;
@@ -25,6 +27,11 @@ public class GameScreen implements Screen {
     private ShapeRenderer renderer;
 
     private Player player;
+    private Array<Obstacle> obstacles = new Array<Obstacle>();
+    private float obstacleTimer;
+
+    private boolean alive = false;
+
     private DebugCameraController debugCameraController;
 
     @Override
@@ -62,6 +69,7 @@ public class GameScreen implements Screen {
 
     private void update(float delta) {
         updatePlayer();
+        updateObstacles(delta);
     }
 
     private void updatePlayer() {
@@ -87,6 +95,29 @@ public class GameScreen implements Screen {
         */
         player.setPosition(playerX, player.getY());
     }
+    private void updateObstacles(float delta) {
+        for (Obstacle obstacle : obstacles) {
+            obstacle.update();
+        }
+
+        createNewObstacle(delta);
+    }
+
+    private void createNewObstacle(float delta) {
+        obstacleTimer += delta;
+        if (obstacleTimer >= GameConfig.OBSTACLE_SPAWN_TIME) {
+            float min = 0f;
+            float max = GameConfig.WORLD_WIDTH;
+            float obstacleX = MathUtils.random(min, max);
+            float obstacleY = GameConfig.WORLD_HEIGHT;
+
+            Obstacle obstacle = new Obstacle();
+            obstacle.setPosition(obstacleX, obstacleY);
+
+            obstacles.add(obstacle);
+            obstacleTimer = 0f;
+        }
+    }
 
     private void renderDebug() {
         renderer.setProjectionMatrix(camera.combined);
@@ -101,6 +132,9 @@ public class GameScreen implements Screen {
 
     private void drawDebug() {
         player.drawDebug(renderer);
+        for (Obstacle obstacle : obstacles) {
+            obstacle.drawDebug(renderer);
+        }
     }
 
     @Override
