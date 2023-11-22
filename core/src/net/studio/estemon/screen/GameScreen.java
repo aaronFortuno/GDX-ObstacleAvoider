@@ -14,6 +14,7 @@ import net.studio.estemon.config.GameConfig;
 import net.studio.estemon.entity.Player;
 import net.studio.estemon.util.GdxUtils;
 import net.studio.estemon.util.ViewportUtils;
+import net.studio.estemon.util.debug.DebugCameraController;
 
 public class GameScreen implements Screen {
 
@@ -22,6 +23,7 @@ public class GameScreen implements Screen {
     private ShapeRenderer renderer;
 
     private Player player;
+    private DebugCameraController debugCameraController;
 
     @Override
     public void show () {
@@ -33,18 +35,38 @@ public class GameScreen implements Screen {
         player = new Player();
 
         // calculate position
-        float startPlayerX = GameConfig.WORLD_WIDTH / 2; // set starting x position at center
-        float startPlayerY = 1; // set starting y at bottom of the screen
+        /*float startPlayerX = GameConfig.WORLD_WIDTH / 2; // set starting x position at center
+        float startPlayerY = 1; // set starting y at bottom of the screen*/
+
+        float startPlayerX = 12; // set starting x position at center
+        float startPlayerY = 12; // set starting y at bottom of the screen
 
         // position player
         player.setPosition(startPlayerX, startPlayerY);
+
+        // create debug camera controller
+        debugCameraController = new DebugCameraController();
+        debugCameraController.setStartPosition(GameConfig.WORLD_CENTER_X, GameConfig.WORLD_CENTER_Y);
     }
 
     @Override
     public void render (float delta) {
+        debugCameraController.handleDebugInput(delta);
+        debugCameraController.applyTo(camera);
+
+        update(delta);
+
         GdxUtils.clearScreen();
 
         renderDebug();
+    }
+
+    private void update(float delta) {
+        updatePlayer();
+    }
+
+    private void updatePlayer() {
+        player.update();
     }
 
     private void renderDebug() {
