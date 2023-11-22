@@ -1,11 +1,13 @@
 package net.studio.estemon.screen;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -64,6 +66,26 @@ public class GameScreen implements Screen {
 
     private void updatePlayer() {
         player.update();
+        blockPlayerFromLeavingTheWorld();
+    }
+
+    private void blockPlayerFromLeavingTheWorld() {
+        // 2 alternatives
+        float playerX = MathUtils.clamp(player.getX(),
+                player.getWidth() / 2,
+                GameConfig.WORLD_WIDTH - player.getWidth() / 2
+        );
+
+        // next code does same as previous but nicely with MathUtils.clamp
+        /*
+        if (playerX < player.getWidth() / 2f) {
+            playerX = player.getWidth() / 2f;
+        }
+        else if (playerX > GameConfig.WORLD_WIDTH - player.getWidth() / 2) {
+            playerX = GameConfig.WORLD_WIDTH - player.getWidth() / 2;
+        }
+        */
+        player.setPosition(playerX, player.getY());
     }
 
     private void renderDebug() {

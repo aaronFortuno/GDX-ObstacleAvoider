@@ -20,6 +20,10 @@ public class Player {
         bounds = new Circle(x, y, BOUNDS_RADIUS);
     }
 
+    public float getX() { return x; }
+
+    public float getY() { return y; }
+
     public void drawDebug(ShapeRenderer renderer) {
         renderer.circle(bounds.x, bounds.y, bounds.radius, 30);
     }
@@ -41,5 +45,10 @@ public class Player {
 
     public void updateBounds() {
         bounds.setPosition(x, y);
+    }
+
+    public float getWidth() {
+        float width = SIZE;
+        return width;
     }
 }
