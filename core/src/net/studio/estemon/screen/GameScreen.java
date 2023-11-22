@@ -35,11 +35,8 @@ public class GameScreen implements Screen {
         player = new Player();
 
         // calculate position
-        /*float startPlayerX = GameConfig.WORLD_WIDTH / 2; // set starting x position at center
-        float startPlayerY = 1; // set starting y at bottom of the screen*/
-
-        float startPlayerX = 12; // set starting x position at center
-        float startPlayerY = 12; // set starting y at bottom of the screen
+        float startPlayerX = GameConfig.WORLD_WIDTH / 2; // set starting x position at center
+        float startPlayerY = 1; // set starting y at bottom of the screen
 
         // position player
         player.setPosition(startPlayerX, startPlayerY);

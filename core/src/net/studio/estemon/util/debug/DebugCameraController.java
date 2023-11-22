@@ -9,18 +9,7 @@ import com.badlogic.gdx.math.Vector2;
 
 public class DebugCameraController {
 
-    private static final int DEFAULT_LEFT_KEY = Input.Keys.A;
-    private static final int DEFAULT_RIGHT_KEY = Input.Keys.D;
-    private static final int DEFAULT_UP_KEY = Input.Keys.W;
-    private static final int DEFAULT_DOWN_KEY = Input.Keys.S;
-    private static final int DEFAULT_ZOOM_IN_KEY = Input.Keys.PAGE_UP;
-    private static final int DEFAULT_ZOOM_OUT_KEY = Input.Keys.PAGE_DOWN;
-    private static final int DEFAULT_RESET_KEY = Input.Keys.BACKSPACE;
 
-    private static final float DEFAULT_MOVE_SPEED = 20f;
-    private static final float DEFAULT_ZOOM_SPEED = 2f;
-    private static final float DEFAULT_MAX_ZOOM_IN = 0.2f;
-    private static final float DEFAULT_MAX_ZOOM_OUT = 30f;
 
     private Vector2 position = new Vector2();
     private Vector2 startPosition = new Vector2();
@@ -72,10 +61,6 @@ public class DebugCameraController {
         setPosition(position.x + xSpeed, position.y + ySpeed);
     }
 
-    private void zoomCamera(float zoomSpeed) {
-        setZoom(zoom + zoomSpeed);
-    }
-
     private void moveLeft(float moveSpeed) {
         moveCamera(-moveSpeed, 0);
     }
@@ -93,11 +78,11 @@ public class DebugCameraController {
     }
 
     private void zoomIn(float zoomSpeed) {
-        setZoom(zoom + zoomSpeed);
+        setZoom(zoom - zoomSpeed);
     }
 
     private void zoomOut(float zoomSpeed) {
-        setZoom(zoom - zoomSpeed);
+        setZoom(zoom + zoomSpeed);
     }
 
     private void reset() {
