@@ -5,6 +5,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
@@ -13,6 +15,7 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
+import net.studio.estemon.assets.AssetPaths;
 import net.studio.estemon.config.GameConfig;
 import net.studio.estemon.entity.Obstacle;
 import net.studio.estemon.entity.Player;
@@ -26,19 +29,31 @@ public class GameScreen implements Screen {
     private Viewport viewport;
     private ShapeRenderer renderer;
 
+    private OrthographicCamera hudCamera;
+    private Viewport hudViewport;
+    private SpriteBatch batch;
+    private BitmapFont font;
+    private final GlyphLayout layout = new GlyphLayout();
+
     private Player player;
     private Array<Obstacle> obstacles = new Array<Obstacle>();
     private float obstacleTimer;
-
-    private boolean alive = true;
+    private int lives = GameConfig.LIVES_START;
 
     private DebugCameraController debugCameraController;
 
     @Override
     public void show () {
+        // game view
         camera = new OrthographicCamera();
         viewport = new FitViewport(GameConfig.WORLD_WIDTH, GameConfig.WORLD_HEIGHT, camera);
         renderer = new ShapeRenderer();
+
+        // hud view
+        hudCamera = new OrthographicCamera();
+        hudViewport = new FitViewport(GameConfig.HUD_WIDTH, GameConfig.HUD_HEIGHT, hudCamera);
+        batch = new SpriteBatch();
+        font = new BitmapFont(Gdx.files.internal(AssetPaths.UI_FONT));
 
         // create player
         player = new Player();
@@ -60,12 +75,14 @@ public class GameScreen implements Screen {
         debugCameraController.handleDebugInput(delta);
         debugCameraController.applyTo(camera);
 
-        if (alive) {
-            update(delta);
-        }
-
+        // update world
+        update(delta);
         GdxUtils.clearScreen();
 
+        // render hud
+        renderUi();
+
+        // render debug graphics
         renderDebug();
     }
 
@@ -75,7 +92,7 @@ public class GameScreen implements Screen {
         updatePlayer();
         updateObstacles(delta);
         if (isPlayerCollidingWithObstacle()) {
-            alive = false;
+            lives--;
         }
     }
 
@@ -135,6 +152,22 @@ public class GameScreen implements Screen {
         }
     }
 
+    private void renderUi() {
+        batch.setProjectionMatrix(hudCamera.combined);
+        batch.begin();
+
+        String livesText = "LIVES: " + lives;
+        layout.setText(font, livesText);
+
+        font.draw(batch,
+                livesText,
+                20,
+                GameConfig.HUD_HEIGHT - layout.height
+        );
+
+        batch.end();
+    }
+
     private void renderDebug() {
         renderer.setProjectionMatrix(camera.combined);
         renderer.begin(ShapeRenderer.ShapeType.Line);
@@ -156,6 +189,7 @@ public class GameScreen implements Screen {
     @Override
     public void resize(int width, int height) {
         viewport.update(width, height, true);
+        hudViewport.update(width, height, true);
         ViewportUtils.debugPixelPerUnit(viewport);
     }
 
@@ -176,7 +210,12 @@ public class GameScreen implements Screen {
 
     @Override
     public void dispose () {
+        batch.dispose();
+        font.dispose();
+
         renderer.dispose();
+
+
     }
 
 }
