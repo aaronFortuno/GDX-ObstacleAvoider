@@ -30,7 +30,7 @@ public class GameScreen implements Screen {
     private Array<Obstacle> obstacles = new Array<Obstacle>();
     private float obstacleTimer;
 
-    private boolean alive = false;
+    private boolean alive = true;
 
     private DebugCameraController debugCameraController;
 
@@ -60,7 +60,9 @@ public class GameScreen implements Screen {
         debugCameraController.handleDebugInput(delta);
         debugCameraController.applyTo(camera);
 
-        update(delta);
+        if (alive) {
+            update(delta);
+        }
 
         GdxUtils.clearScreen();
 
@@ -68,8 +70,22 @@ public class GameScreen implements Screen {
     }
 
     private void update(float delta) {
+        // not wrapping inside alive because we want to be
+        // able to inspect the world and control camera even if the game is over
         updatePlayer();
         updateObstacles(delta);
+        if (isPlayerCollidingWithObstacle()) {
+            alive = false;
+        }
+    }
+
+    private boolean isPlayerCollidingWithObstacle() {
+        for (Obstacle obstacle : obstacles) {
+            if (obstacle.isPlayerColliding(player)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private void updatePlayer() {
