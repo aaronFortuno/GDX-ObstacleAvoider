@@ -2,6 +2,7 @@ package net.studio.estemon.screen;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -12,7 +13,9 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 
 import net.studio.estemon.assets.AssetPaths;
 import net.studio.estemon.config.GameConfig;
+import net.studio.estemon.entity.Background;
 import net.studio.estemon.entity.Obstacle;
+import net.studio.estemon.entity.Player;
 import net.studio.estemon.util.GdxUtils;
 import net.studio.estemon.util.ViewportUtils;
 import net.studio.estemon.util.debug.DebugCameraController;
@@ -31,6 +34,11 @@ public class GameRenderer implements Disposable {
     private final GlyphLayout layout = new GlyphLayout();
     private DebugCameraController debugCameraController;
     private final GameController controller;
+
+    private Texture backgroundTexture;
+    private Texture playerTexture;
+    private Texture obstacleTexture;
+
 
     // constructor
     public GameRenderer(GameController controller) {
@@ -53,6 +61,10 @@ public class GameRenderer implements Disposable {
         // create debug camera controller
         debugCameraController = new DebugCameraController();
         debugCameraController.setStartPosition(GameConfig.WORLD_CENTER_X, GameConfig.WORLD_CENTER_Y);
+
+        backgroundTexture = new Texture(Gdx.files.internal("gameplay/background.png"));
+        playerTexture = new Texture(Gdx.files.internal("gameplay/ship_a.png"));
+        obstacleTexture = new Texture(Gdx.files.internal("gameplay/obstacle_large.png"));
     }
 
     // public methods
@@ -61,6 +73,9 @@ public class GameRenderer implements Disposable {
         debugCameraController.applyTo(camera);
 
         GdxUtils.clearScreen();
+
+        // render gameplay (before ui)
+        renderGamePlay();
 
         // render hud
         renderUi();
@@ -80,6 +95,10 @@ public class GameRenderer implements Disposable {
         batch.dispose();
         font.dispose();
         renderer.dispose();
+
+        backgroundTexture.dispose();
+        playerTexture.dispose();
+        obstacleTexture.dispose();
     }
 
     /*
@@ -92,6 +111,34 @@ public class GameRenderer implements Disposable {
     */
 
     // private methods
+    private void renderGamePlay() {
+        viewport.apply();
+        batch.setProjectionMatrix(camera.combined);
+        batch.begin();
+
+        // draw background
+        Background background = controller.getBackground();
+        batch.draw(backgroundTexture,
+                background.getX(), background.getY(),
+                background.getWidth(), background.getHeight());
+
+        // draw player
+        Player player = controller.getPlayer();
+        batch.draw(playerTexture,
+                player.getX(), player.getY(),
+                player.getWidth(), player.getHeight()
+        );
+
+        // draw obstacle
+        for (Obstacle obstacle : controller.getObstacles()) {
+            batch.draw(obstacleTexture,
+                    obstacle.getX(), obstacle.getY(),
+                    obstacle.getWidth(), obstacle.getHeight());
+        }
+
+        batch.end();
+    }
+
     private void renderUi() {
         hudViewport.apply();
         batch.setProjectionMatrix(hudCamera.combined);

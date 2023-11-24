@@ -2,9 +2,12 @@ package net.studio.estemon.screen;
 
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.Pool;
+import com.badlogic.gdx.utils.Pools;
 
 import net.studio.estemon.config.DifficultyLevel;
 import net.studio.estemon.config.GameConfig;
+import net.studio.estemon.entity.Background;
 import net.studio.estemon.entity.Obstacle;
 import net.studio.estemon.entity.Player;
 
@@ -15,6 +18,7 @@ public class GameController {
     // attributes
     private Player player;
     private Array<Obstacle> obstacles = new Array<Obstacle>();
+    private Background background;
 
     private float obstacleTimer;
     private float scoreTimer;
@@ -23,7 +27,8 @@ public class GameController {
     private int score;
     private int displayScore;
 
-    private DifficultyLevel difficultyLevel = DifficultyLevel.HARD;
+    private DifficultyLevel difficultyLevel = DifficultyLevel.EASY;
+    private Pool<Obstacle> obstaclePool;
 
 
     // constructor
@@ -36,11 +41,23 @@ public class GameController {
         player = new Player();
 
         // calculate position
-        float startPlayerX = GameConfig.WORLD_WIDTH / 2; // set starting x position at center
-        float startPlayerY = 1; // set starting y at bottom of the screen
+        float halfPlayerSize = GameConfig.PLAYER_SIZE / 2;
+        float startPlayerX = GameConfig.WORLD_WIDTH / 2 - halfPlayerSize; // set starting x position at center
+        float startPlayerY = 1 - halfPlayerSize; // set starting y at bottom of the screen
 
-        // position player
+        // initial player position
         player.setPosition(startPlayerX, startPlayerY);
+
+        // create obstacle pool
+        obstaclePool = Pools.get(Obstacle.class, 40);
+
+        // create background
+        background = new Background();
+        background.setPosition(0, 0);
+        background.setSize(
+                GameConfig.WORLD_WIDTH * GameConfig.WORLD_RATIO_ASPECT,
+                GameConfig.WORLD_HEIGHT
+        );
     }
 
     // public methods
@@ -67,6 +84,8 @@ public class GameController {
     public Array<Obstacle> getObstacles() {
         return obstacles;
     }
+
+    public Background getBackground() { return background; }
 
     public int getLives() {
         return lives;
@@ -98,8 +117,8 @@ public class GameController {
     private void blockPlayerFromLeavingTheWorld() {
         // 2 alternatives
         float playerX = MathUtils.clamp(player.getX(),
-                player.getWidth() / 2,
-                GameConfig.WORLD_WIDTH - player.getWidth() / 2
+                0, // when only with ShapeRenderer: player.getWidth() / 2,
+                GameConfig.WORLD_WIDTH - player.getWidth()
         );
 
         player.setPosition(playerX, player.getY());
@@ -124,7 +143,7 @@ public class GameController {
             float obstacleX = MathUtils.random(min, max);
             float obstacleY = GameConfig.WORLD_HEIGHT;
 
-            Obstacle obstacle = new Obstacle();
+            Obstacle obstacle = obstaclePool.obtain();
             obstacle.setYSpeed(difficultyLevel.getObstacleSpeed());
             obstacle.setPosition(obstacleX, obstacleY);
 
@@ -137,10 +156,11 @@ public class GameController {
         if (obstacles.size > 0) {
             Obstacle first = obstacles.first();
 
-            float minObstacleY = -Obstacle.SIZE;
+            float minObstacleY = -GameConfig.OBSTACLE_SIZE;
 
             if (first.getY() < minObstacleY) {
                 obstacles.removeValue(first, true);
+                obstaclePool.free(first);
             }
         }
     }

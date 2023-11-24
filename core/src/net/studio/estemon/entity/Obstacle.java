@@ -5,20 +5,18 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Intersector;
+import com.badlogic.gdx.utils.Pool;
 
 import net.studio.estemon.config.GameConfig;
 
-public class Obstacle extends GameObjectBase {
-
-    private static final float BOUNDS_RADIUS = 0.3f;
-    public static final float SIZE = 2 * BOUNDS_RADIUS;
-    // private static final float MAX_X_SPEED = 0.2f;
+public class Obstacle extends GameObjectBase implements Pool.Poolable {
 
     private float ySpeed = GameConfig.MEDIUM_OBSTACLE_SPEED;
     private boolean hit;
 
     public Obstacle() {
-        super(BOUNDS_RADIUS);
+        super(GameConfig.OBSTACLE_BOUNDS_RADIUS);
+        setSize(GameConfig.OBSTACLE_SIZE, GameConfig.OBSTACLE_SIZE);
     }
 
     public void update() {
@@ -43,5 +41,11 @@ public class Obstacle extends GameObjectBase {
     public void drawDebug(ShapeRenderer renderer) {
         super.drawDebug(renderer);
         renderer.x(getBounds().x, getBounds().y, 0.1f);
+    }
+
+    @Override
+    public void reset() {
+        // we have to reset obstacles hit state in order to reuse them with pool
+        hit = false;
     }
 }

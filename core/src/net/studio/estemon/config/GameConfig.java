@@ -11,6 +11,7 @@ public class GameConfig {
 
     public static final float WORLD_WIDTH = 6.0f; // world units
     public static final float WORLD_HEIGHT = 10.0f; // world units
+    public static final float WORLD_RATIO_ASPECT = WORLD_HEIGHT / WORLD_WIDTH;
 
     public static final float WORLD_CENTER_X = WORLD_WIDTH / 2; // world units
     public static final float WORLD_CENTER_Y = WORLD_HEIGHT / 2; // world units
@@ -23,5 +24,11 @@ public class GameConfig {
     public static final float EASY_OBSTACLE_SPEED = 0.1f;
     public static final float MEDIUM_OBSTACLE_SPEED = 0.15f;
     public static final float HARD_OBSTACLE_SPEED = 0.18f;
+
+    public static final float PLAYER_BOUNDS_RADIUS = 0.4f; // world units
+    public static final float PLAYER_SIZE = 2 * PLAYER_BOUNDS_RADIUS; // world units
+
+    public static final float OBSTACLE_BOUNDS_RADIUS = 0.3f;
+    public static final float OBSTACLE_SIZE = 2 * OBSTACLE_BOUNDS_RADIUS;
 
 }
