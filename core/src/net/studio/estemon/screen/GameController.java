@@ -23,7 +23,7 @@ public class GameController {
     private int score;
     private int displayScore;
 
-    private DifficultyLevel difficultyLevel = DifficultyLevel.HARD;
+    private DifficultyLevel difficultyLevel = DifficultyLevel.EASY;
 
 
     // constructor
@@ -110,6 +110,7 @@ public class GameController {
         }
 
         createNewObstacle(delta);
+        removePassedObstacles();
     }
 
     private void createNewObstacle(float delta) {
@@ -126,6 +127,18 @@ public class GameController {
 
             obstacles.add(obstacle);
             obstacleTimer = 0f;
+        }
+    }
+
+    private void removePassedObstacles() {
+        if (obstacles.size > 0) {
+            Obstacle first = obstacles.first();
+
+            float minObstacleY = -Obstacle.SIZE;
+
+            if (first.getY() < minObstacleY) {
+                obstacles.removeValue(first, true);
+            }
         }
     }
 

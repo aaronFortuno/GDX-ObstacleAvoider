@@ -82,8 +82,18 @@ public class GameRenderer implements Disposable {
         renderer.dispose();
     }
 
+    /*
+    Whenever we use more than one viewport we need to call .apply() method of the viewport
+    before any drawing. Since we are using different screen sizes for each viewport we have
+    to apply viewport to avoid layout problems, buttons don't working, etc.
+
+    Is similar as we have to tell viewport that we resized our screen or tell the
+    projectionMatrix which camera are we using.
+    */
+
     // private methods
     private void renderUi() {
+        hudViewport.apply();
         batch.setProjectionMatrix(hudCamera.combined);
         batch.begin();
 
@@ -107,6 +117,7 @@ public class GameRenderer implements Disposable {
     }
 
     private void renderDebug() {
+        viewport.apply();
         renderer.setProjectionMatrix(camera.combined);
         renderer.begin(ShapeRenderer.ShapeType.Line);
 
