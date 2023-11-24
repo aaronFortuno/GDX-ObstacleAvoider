@@ -16,6 +16,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import net.studio.estemon.assets.AssetPaths;
+import net.studio.estemon.config.DifficultyLevel;
 import net.studio.estemon.config.GameConfig;
 import net.studio.estemon.entity.Obstacle;
 import net.studio.estemon.entity.Player;
@@ -45,6 +46,7 @@ public class GameScreen implements Screen {
     private int score;
     private int displayScore;
 
+    private DifficultyLevel difficultyLevel = DifficultyLevel.HARD;
     private DebugCameraController debugCameraController;
 
     @Override
@@ -94,6 +96,10 @@ public class GameScreen implements Screen {
     private void update(float delta) {
         // not wrapping inside alive because we want to be
         // able to inspect the world and control camera even if the game is over
+        if (isGameOver()) {
+            return;
+        }
+
         updatePlayer();
         updateObstacles(delta);
         updateScore(delta);
@@ -103,9 +109,13 @@ public class GameScreen implements Screen {
         }
     }
 
+    private boolean isGameOver() {
+        return lives <= 0;
+    }
+
     private boolean isPlayerCollidingWithObstacle() {
         for (Obstacle obstacle : obstacles) {
-            if (obstacle.isPlayerColliding(player)) {
+            if (obstacle.isNotHit() && obstacle.isPlayerColliding(player)) {
                 return true;
             }
         }
@@ -152,6 +162,7 @@ public class GameScreen implements Screen {
             float obstacleY = GameConfig.WORLD_HEIGHT;
 
             Obstacle obstacle = new Obstacle();
+            obstacle.setYSpeed(difficultyLevel.getObstacleSpeed());
             obstacle.setPosition(obstacleX, obstacleY);
 
             obstacles.add(obstacle);
