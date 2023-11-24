@@ -37,8 +37,13 @@ public class GameScreen implements Screen {
 
     private Player player;
     private Array<Obstacle> obstacles = new Array<Obstacle>();
+
     private float obstacleTimer;
+    private float scoreTimer;
+
     private int lives = GameConfig.LIVES_START;
+    private int score;
+    private int displayScore;
 
     private DebugCameraController debugCameraController;
 
@@ -91,6 +96,8 @@ public class GameScreen implements Screen {
         // able to inspect the world and control camera even if the game is over
         updatePlayer();
         updateObstacles(delta);
+        updateScore(delta);
+        updateDisplayScore(delta);
         if (isPlayerCollidingWithObstacle()) {
             lives--;
         }
@@ -158,12 +165,19 @@ public class GameScreen implements Screen {
 
         String livesText = "LIVES: " + lives;
         layout.setText(font, livesText);
-
         font.draw(batch,
                 livesText,
                 20,
                 GameConfig.HUD_HEIGHT - layout.height
         );
+
+        String scoreText = "SCORE: " + displayScore;
+        layout.setText(font, scoreText);
+        font.draw(batch,
+                scoreText,
+                GameConfig.HUD_WIDTH - layout.width - 20,
+                GameConfig.HUD_HEIGHT - layout.height
+                );
 
         batch.end();
     }
@@ -208,14 +222,27 @@ public class GameScreen implements Screen {
         dispose(); // in general, we have to dispose resources when leaving a screen
     }
 
+    private void updateScore(float delta) {
+        scoreTimer += delta;
+        if (scoreTimer >= GameConfig.SCORE_MAX_TIME) {
+            score += MathUtils.random(1, 5);
+            scoreTimer = 0f;
+        }
+    }
+
+    private void updateDisplayScore(float delta) {
+        if (displayScore < score) {
+            displayScore = Math.min(score,
+                    displayScore + (int) (60 * delta)
+            );
+        }
+    }
+
     @Override
     public void dispose () {
         batch.dispose();
         font.dispose();
-
         renderer.dispose();
-
-
     }
 
 }
