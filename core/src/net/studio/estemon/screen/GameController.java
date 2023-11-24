@@ -23,7 +23,7 @@ public class GameController {
     private int score;
     private int displayScore;
 
-    private DifficultyLevel difficultyLevel = DifficultyLevel.EASY;
+    private DifficultyLevel difficultyLevel = DifficultyLevel.HARD;
 
 
     // constructor
@@ -116,6 +116,9 @@ public class GameController {
     private void createNewObstacle(float delta) {
         obstacleTimer += delta;
         if (obstacleTimer >= GameConfig.OBSTACLE_SPAWN_TIME) {
+            // if we want to create our obstacle completely inside world (not its center)
+            // float min = Obstacle.SIZE / 2f;
+            // float max = GameConfig.WORLD_WIDTH - Obstacle.SIZE / 2f;
             float min = 0f;
             float max = GameConfig.WORLD_WIDTH;
             float obstacleX = MathUtils.random(min, max);

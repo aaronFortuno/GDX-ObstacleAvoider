@@ -38,4 +38,10 @@ public class Obstacle extends GameObjectBase {
     public void setYSpeed(float ySpeed) {
         this.ySpeed = ySpeed;
     }
+
+    @Override
+    public void drawDebug(ShapeRenderer renderer) {
+        super.drawDebug(renderer);
+        renderer.x(getBounds().x, getBounds().y, 0.1f);
+    }
 }
