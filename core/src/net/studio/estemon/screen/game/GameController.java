@@ -1,4 +1,4 @@
-package net.studio.estemon.screen;
+package net.studio.estemon.screen.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;

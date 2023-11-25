@@ -1,4 +1,4 @@
-package net.studio.estemon.screen;
+package net.studio.estemon.screen.game;
 
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
@@ -20,12 +20,6 @@ public class GameScreen implements Screen {
 
     @Override
     public void show() {
-        assetManager.load(AssetDescriptors.FONT);
-        assetManager.load(AssetDescriptors.GAMEPLAY_ATLAS);
-
-        // blocks until all assets are loaded
-        assetManager.finishLoading();
-
         controller = new GameController();
         renderer = new GameRenderer(assetManager, controller);
     }
