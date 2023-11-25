@@ -9,8 +9,8 @@ public class GameConfig {
     public static final float HUD_WIDTH = 480f; // world units
     public static final float HUD_HEIGHT = 800f; // world units
 
-    public static final float WORLD_WIDTH = 6.0f; // world units
-    public static final float WORLD_HEIGHT = 10.0f; // world units
+    public static final float WORLD_WIDTH = 6f; // world units
+    public static final float WORLD_HEIGHT = 10f; // world units
     public static final float WORLD_RATIO_ASPECT = WORLD_HEIGHT / WORLD_WIDTH;
 
     public static final float WORLD_CENTER_X = WORLD_WIDTH / 2; // world units
@@ -28,7 +28,7 @@ public class GameConfig {
     public static final float PLAYER_BOUNDS_RADIUS = 0.4f; // world units
     public static final float PLAYER_SIZE = 2 * PLAYER_BOUNDS_RADIUS; // world units
 
-    public static final float OBSTACLE_BOUNDS_RADIUS = 0.3f;
-    public static final float OBSTACLE_SIZE = 2 * OBSTACLE_BOUNDS_RADIUS;
+    public static final float OBSTACLE_BOUNDS_RADIUS = 0.3f; // world units
+    public static final float OBSTACLE_SIZE = 2 * OBSTACLE_BOUNDS_RADIUS; // world units
 
 }

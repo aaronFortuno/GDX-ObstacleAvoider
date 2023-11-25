@@ -1,5 +1,7 @@
 package net.studio.estemon.screen;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Pool;
@@ -30,6 +32,9 @@ public class GameController {
     private DifficultyLevel difficultyLevel = DifficultyLevel.EASY;
     private Pool<Obstacle> obstaclePool;
 
+    private final float startPlayerX = GameConfig.WORLD_WIDTH / 2 - (GameConfig.PLAYER_SIZE / 2); // set starting x position at center
+    private final float startPlayerY = 1 - GameConfig.PLAYER_SIZE / 2; // set starting y at bottom of the screen
+
 
     // constructor
     public GameController() {
@@ -39,11 +44,6 @@ public class GameController {
     private void init() {
         // create player
         player = new Player();
-
-        // calculate position
-        float halfPlayerSize = GameConfig.PLAYER_SIZE / 2;
-        float startPlayerX = GameConfig.WORLD_WIDTH / 2 - halfPlayerSize; // set starting x position at center
-        float startPlayerY = 1 - halfPlayerSize; // set starting y at bottom of the screen
 
         // initial player position
         player.setPosition(startPlayerX, startPlayerY);
@@ -74,6 +74,12 @@ public class GameController {
         updateDisplayScore(delta);
         if (isPlayerCollidingWithObstacle()) {
             lives--;
+
+            if (isGameOver()) {
+
+            } else {
+                // restart();
+            }
         }
     }
 
@@ -95,9 +101,16 @@ public class GameController {
         return displayScore;
     }
 
-    // private methods
-    private boolean isGameOver() {
+    public boolean isGameOver() {
         return lives <= 0;
+    }
+
+
+    // private methods
+    private void restart() {
+        obstaclePool.freeAll(obstacles);
+        obstacles.clear();
+        player.setPosition(startPlayerX, startPlayerY);
     }
 
     private boolean isPlayerCollidingWithObstacle() {
@@ -110,7 +123,11 @@ public class GameController {
     }
 
     private void updatePlayer() {
-        player.update();
+        float xSpeed = 0;
+        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) { xSpeed = GameConfig.MAX_PLAYER_X_SPEED; }
+        else if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) { xSpeed = -GameConfig.MAX_PLAYER_X_SPEED; }
+
+        player.setX(player.getX() + xSpeed);
         blockPlayerFromLeavingTheWorld();
     }
 
@@ -136,10 +153,10 @@ public class GameController {
         obstacleTimer += delta;
         if (obstacleTimer >= GameConfig.OBSTACLE_SPAWN_TIME) {
             // if we want to create our obstacle completely inside world (not its center)
-            // float min = Obstacle.SIZE / 2f;
-            // float max = GameConfig.WORLD_WIDTH - Obstacle.SIZE / 2f;
-            float min = 0f;
-            float max = GameConfig.WORLD_WIDTH;
+            // float min = 0f;
+            // float max = GameConfig.WORLD_WIDTH - GameConfig.OBSTACLE_SIZE;
+            float min = 0f - GameConfig.OBSTACLE_SIZE / 2;
+            float max = GameConfig.WORLD_WIDTH - GameConfig.OBSTACLE_SIZE / 2;
             float obstacleX = MathUtils.random(min, max);
             float obstacleY = GameConfig.WORLD_HEIGHT;
 

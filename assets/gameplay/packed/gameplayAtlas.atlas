@@ -1,0 +1,27 @@
+
+gameplayAtlas.png
+size: 2048, 2048
+format: RGBA8888
+filter: Nearest, Nearest
+repeat: none
+background
+  rotate: false
+  xy: 2, 68
+  size: 1024, 1024
+  orig: 1024, 1024
+  offset: 0, 0
+  index: -1
+obstacle_large
+  rotate: false
+  xy: 2, 2
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+ship_a
+  rotate: false
+  xy: 1028, 1028
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1

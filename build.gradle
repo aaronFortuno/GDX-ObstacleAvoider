@@ -10,7 +10,6 @@ buildscript {
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:8.1.4'
-        
 
     }
 }
@@ -21,7 +20,7 @@ allprojects {
     version = '1.0'
     ext {
         appName = "ObstacleAvoider"
-        gdxVersion = '1.12.0'
+        gdxVersion = '1.12.1'
         roboVMVersion = '2.3.20'
         box2DLightsVersion = '1.5'
         ashleyVersion = '1.7.4'
@@ -46,14 +45,15 @@ project(":desktop") {
 
     dependencies {
         implementation project(":core")
-        // api "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
+
+        api "com.badlogicgames.gdx:gdx:$gdxVersion"
+        // api "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion" // uncomment to use hiero tool
         api "com.badlogicgames.gdx:gdx-backend-lwjgl3:$gdxVersion"
         api "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
 
         // added manually
         api "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-desktop"
-        api "com.badlogicgames.gdx:gdx-tools:$gdxVersion"
-        
+        // api "com.badlogicgames.gdx:gdx-tools:$gdxVersion"
     }
 }
 
@@ -79,6 +79,9 @@ project(":core") {
 
     dependencies {
         api "com.badlogicgames.gdx:gdx:$gdxVersion"
-        
+
+        // officially we can't put this here but now TexturePacker works...
+        api "com.badlogicgames.gdx:gdx-tools:$gdxVersion"
+
     }
 }
