@@ -34,12 +34,12 @@ public class GameRenderer implements Disposable {
 
     private OrthographicCamera hudCamera;
     private Viewport hudViewport;
-    private SpriteBatch batch;
     private BitmapFont font;
     private final GlyphLayout layout = new GlyphLayout();
     private DebugCameraController debugCameraController;
     private final GameController controller;
     private final AssetManager assetManager;
+    private final SpriteBatch batch;
 
     private TextureRegion backgroundRegion;
     private TextureRegion playerRegion;
@@ -47,7 +47,8 @@ public class GameRenderer implements Disposable {
 
 
     // constructor
-    public GameRenderer(AssetManager assetManager, GameController controller) {
+    public GameRenderer(SpriteBatch batch, AssetManager assetManager, GameController controller) {
+        this.batch = batch;
         this.assetManager = assetManager;
         this.controller = controller;
         init();
@@ -62,7 +63,6 @@ public class GameRenderer implements Disposable {
         // hud view
         hudCamera = new OrthographicCamera();
         hudViewport = new FitViewport(GameConfig.HUD_WIDTH, GameConfig.HUD_HEIGHT, hudCamera);
-        batch = new SpriteBatch();
         font = assetManager.get(AssetDescriptors.FONT);
 
         // create debug camera controller
@@ -74,10 +74,6 @@ public class GameRenderer implements Disposable {
         backgroundRegion = gameplayAtlas.findRegion(RegionNames.BACKGROUND);
         obstacleRegion = gameplayAtlas.findRegion(RegionNames.OBSTACLE_LARGE);
         playerRegion = gameplayAtlas.findRegion(RegionNames.PLAYER_SHIP_A);
-
-        /*backgroundTexture = assetManager.get(AssetDescriptors.BACKGROUND);
-        obstacleTexture = assetManager.get(AssetDescriptors.OBSTACLE_LARGE);
-        playerTexture = assetManager.get(AssetDescriptors.PLAYER_SHIP_A);*/
     }
 
     // public methods
@@ -118,14 +114,7 @@ public class GameRenderer implements Disposable {
 
     @Override
     public void dispose() {
-        batch.dispose();
         renderer.dispose();
-
-        // since we are using assetManager there's no need to dispose each texture/font manually
-        // font.dispose();
-        // backgroundTexture.dispose();
-        // playerTexture.dispose();
-        // obstacleTexture.dispose();
     }
 
     /*

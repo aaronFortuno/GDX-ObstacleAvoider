@@ -12,6 +12,7 @@ import net.studio.estemon.ObstacleAvoiderGame;
 import net.studio.estemon.assets.AssetDescriptors;
 import net.studio.estemon.config.GameConfig;
 import net.studio.estemon.screen.game.GameScreen;
+import net.studio.estemon.screen.menu.MenuScreen;
 import net.studio.estemon.util.GdxUtils;
 
 public class LoadingScreen extends ScreenAdapter {
@@ -49,6 +50,7 @@ public class LoadingScreen extends ScreenAdapter {
         assetManager.load(AssetDescriptors.FONT);
         assetManager.load(AssetDescriptors.GAMEPLAY_ATLAS);
         assetManager.load(AssetDescriptors.UI_ATLAS);
+        assetManager.load(AssetDescriptors.UI_SKIN);
     }
 
     @Override
@@ -66,7 +68,7 @@ public class LoadingScreen extends ScreenAdapter {
 
         // only when end drawing and rendering check if we can start game
         if (changeScreen) {
-            game.setScreen(new GameScreen(game));
+            game.setScreen(new MenuScreen(game));
         }
     }
 
