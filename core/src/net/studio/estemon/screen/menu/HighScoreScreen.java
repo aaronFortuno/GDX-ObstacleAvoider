@@ -6,6 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageTextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import net.studio.estemon.ObstacleAvoiderGame;
@@ -36,7 +37,7 @@ public class HighScoreScreen extends MenuScreenBase {
         Label highScoreLabel = new Label(highscoreString, skin);
 
         // back button
-        ImageTextButton backButton = new ImageTextButton("BACK", skin);
+        TextButton backButton = new TextButton("BACK", skin);
         backButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {

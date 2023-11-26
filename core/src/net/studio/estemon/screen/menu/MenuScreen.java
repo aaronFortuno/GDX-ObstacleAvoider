@@ -22,7 +22,6 @@ public class MenuScreen extends MenuScreenBase {
     protected Actor createUi() {
         Table table = new Table();
         TextureAtlas gamePlayAtlas = assetManager.get(AssetDescriptors.GAMEPLAY_ATLAS);
-
         TextureRegion backgroundRegion = gamePlayAtlas.findRegion(RegionNames.BACKGROUND);
 
         table.setBackground(new TextureRegionDrawable(backgroundRegion));
@@ -68,8 +67,7 @@ public class MenuScreen extends MenuScreenBase {
         buttonTable.add(playButton).row();
         buttonTable.add(highscoreButton).row();
         buttonTable.add(settingsButton).row();
-        buttonTable.add(quitButton).row();
-        buttonTable.center();
+        buttonTable.add(quitButton);
 
         table.add(buttonTable);
         table.center();

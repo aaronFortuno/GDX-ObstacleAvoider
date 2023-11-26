@@ -49,8 +49,8 @@ public class LoadingScreen extends ScreenAdapter {
 
         assetManager.load(AssetDescriptors.FONT);
         assetManager.load(AssetDescriptors.GAMEPLAY_ATLAS);
-        assetManager.load(AssetDescriptors.UI_ATLAS);
         assetManager.load(AssetDescriptors.UI_SKIN);
+        assetManager.load(AssetDescriptors.HIT_SOUND);
     }
 
     @Override

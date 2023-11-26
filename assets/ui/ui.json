@@ -24,14 +24,6 @@
       "r": 0.4
     }
   },
-  "ImageTextButtonStyle": {
-    "default": {
-      "down": "grey_button03",
-      "up": "grey_button01",
-      "font": "default-font",
-      "fontColor": "black"
-    }
-  },
   "TextButtonStyle": {
     "default": {
       "down": "grey_button03",
@@ -47,13 +39,15 @@
       "font": "default-font",
       "fontColor": "black"
     },
-    "highscore": {
+    "high-score": {
       "font": "default-font",
       "fontColor": "blueish-gray"
     }
   },
   "CheckBoxStyle": {
     "default": {
+      "down": "grey_button03",
+      "up": "grey_button01",
       "checkboxOn": "grey_boxCheckmark",
       "checkboxOff": "grey_box",
       "font": "default-font",

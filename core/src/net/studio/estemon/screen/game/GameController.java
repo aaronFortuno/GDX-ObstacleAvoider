@@ -2,11 +2,15 @@ package net.studio.estemon.screen.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Pool;
 import com.badlogic.gdx.utils.Pools;
 
+import net.studio.estemon.ObstacleAvoiderGame;
+import net.studio.estemon.assets.AssetDescriptors;
 import net.studio.estemon.common.GameManager;
 import net.studio.estemon.config.DifficultyLevel;
 import net.studio.estemon.config.GameConfig;
@@ -31,13 +35,19 @@ public class GameController {
     private int displayScore;
 
     private Pool<Obstacle> obstaclePool;
+    private Sound hit;
+
+    private ObstacleAvoiderGame game;
+    private AssetManager assetManager;
 
     private final float startPlayerX = GameConfig.WORLD_WIDTH / 2 - (GameConfig.PLAYER_SIZE / 2); // set starting x position at center
     private final float startPlayerY = 1 - GameConfig.PLAYER_SIZE / 2; // set starting y at bottom of the screen
 
 
     // constructor
-    public GameController() {
+    public GameController(ObstacleAvoiderGame game) {
+        this.game = game;
+        assetManager = game.getAssetManager();
         init();
     }
 
@@ -58,6 +68,8 @@ public class GameController {
                 GameConfig.WORLD_WIDTH * GameConfig.WORLD_RATIO_ASPECT,
                 GameConfig.WORLD_HEIGHT
         );
+
+        hit = assetManager.get(AssetDescriptors.HIT_SOUND);
     }
 
     // public methods
@@ -116,6 +128,7 @@ public class GameController {
     private boolean isPlayerCollidingWithObstacle() {
         for (Obstacle obstacle : obstacles) {
             if (obstacle.isNotHit() && obstacle.isPlayerColliding(player)) {
+                hit.play();
                 return true;
             }
         }
