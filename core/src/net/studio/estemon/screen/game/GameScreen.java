@@ -5,6 +5,7 @@ import com.badlogic.gdx.assets.AssetManager;
 
 import net.studio.estemon.ObstacleAvoiderGame;
 import net.studio.estemon.assets.AssetDescriptors;
+import net.studio.estemon.screen.menu.MenuScreen;
 
 public class GameScreen implements Screen {
 
@@ -28,6 +29,12 @@ public class GameScreen implements Screen {
     public void render(float delta) {
         controller.update(delta);
         renderer.render(delta);
+
+        // we change screen only AFTER last frame has been rendered. That's
+        // why we can check it by controller.isGameOver()
+        if (controller.isGameOver()) {
+            game.setScreen(new MenuScreen(game));
+        }
     }
 
     @Override

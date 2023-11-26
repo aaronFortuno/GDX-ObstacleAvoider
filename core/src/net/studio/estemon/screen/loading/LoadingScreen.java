@@ -27,7 +27,7 @@ public class LoadingScreen extends ScreenAdapter {
     private ShapeRenderer renderer;
 
     private float progress;
-    private float waitTime = 0.75f;
+    private float waitTime = 0.25f;
     private boolean changeScreen;
 
     private final ObstacleAvoiderGame game;

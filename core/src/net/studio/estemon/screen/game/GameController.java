@@ -30,7 +30,6 @@ public class GameController {
     private int score;
     private int displayScore;
 
-    private DifficultyLevel difficultyLevel = DifficultyLevel.EASY;
     private Pool<Obstacle> obstaclePool;
 
     private final float startPlayerX = GameConfig.WORLD_WIDTH / 2 - (GameConfig.PLAYER_SIZE / 2); // set starting x position at center
@@ -162,6 +161,8 @@ public class GameController {
             float obstacleY = GameConfig.WORLD_HEIGHT;
 
             Obstacle obstacle = obstaclePool.obtain();
+
+            DifficultyLevel difficultyLevel = GameManager.INSTANCE.getDifficultyLevel();
             obstacle.setYSpeed(difficultyLevel.getObstacleSpeed());
             obstacle.setPosition(obstacleX, obstacleY);
 

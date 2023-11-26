@@ -25,6 +25,8 @@ import net.studio.estemon.ObstacleAvoiderGame;
 import net.studio.estemon.assets.AssetDescriptors;
 import net.studio.estemon.assets.AssetPaths;
 import net.studio.estemon.assets.RegionNames;
+import net.studio.estemon.common.GameManager;
+import net.studio.estemon.config.DifficultyLevel;
 import net.studio.estemon.config.GameConfig;
 import net.studio.estemon.util.GdxUtils;
 
@@ -78,6 +80,7 @@ public class SettingsScreen extends ScreenAdapter {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 checkmark.setY(easyButton.getY() + 25);
+                GameManager.INSTANCE.updateDifficulty(DifficultyLevel.EASY);
             }
         });
 
@@ -87,6 +90,7 @@ public class SettingsScreen extends ScreenAdapter {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 checkmark.setY(mediumButton.getY() + 25);
+                GameManager.INSTANCE.updateDifficulty(DifficultyLevel.MEDIUM);
             }
         });
 
@@ -96,6 +100,7 @@ public class SettingsScreen extends ScreenAdapter {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 checkmark.setY(hardButton.getY() + 25);
+                GameManager.INSTANCE.updateDifficulty(DifficultyLevel.HARD);
             }
         });
 
@@ -103,6 +108,12 @@ public class SettingsScreen extends ScreenAdapter {
         checkmark = new Image(new TextureRegionDrawable(checkmarkRegion));
         checkmark.setPosition(mediumButton.getX() + 50, mediumButton.getY() + 40, Align.center);
         checkmark.setColor(Color.DARK_GRAY);
+        DifficultyLevel difficultyLevel = GameManager.INSTANCE.getDifficultyLevel();
+        if (difficultyLevel.isEasy()) {
+            checkmark.setY(easyButton.getY() + 25);
+        } else if (difficultyLevel.isHard()) {
+            checkmark.setY(hardButton.getY() + 25);
+        }
 
         ImageTextButton backButton = new ImageTextButton("BACK", skin);
         backButton.setPosition(GameConfig.HUD_WIDTH / 2, GameConfig.HUD_HEIGHT / 2 - 180, Align.center);
