@@ -1,27 +1,22 @@
 package net.studio.estemon.screen.menu;
 
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.ButtonGroup;
 import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.ImageTextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import com.badlogic.gdx.utils.Align;
+
 import net.studio.estemon.ObstacleAvoiderGame;
 import net.studio.estemon.assets.AssetDescriptors;
 import net.studio.estemon.assets.RegionNames;
 import net.studio.estemon.common.GameManager;
 import net.studio.estemon.config.DifficultyLevel;
-import net.studio.estemon.config.GameConfig;
 
 public class SettingsScreen extends MenuScreenBase {
 
@@ -48,7 +43,7 @@ public class SettingsScreen extends MenuScreenBase {
         medium = checkBox(DifficultyLevel.MEDIUM.name(), skin);
         hard = checkBox(DifficultyLevel.HARD.name(), skin);
 
-        checkBoxGroup = new ButtonGroup<CheckBox>(easy, medium, hard);
+        checkBoxGroup = new ButtonGroup<>(easy, medium, hard);
         final DifficultyLevel difficultyLevel = GameManager.INSTANCE.getDifficultyLevel();
         checkBoxGroup.setChecked(difficultyLevel.name());
 

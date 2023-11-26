@@ -4,7 +4,6 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
 
 import net.studio.estemon.ObstacleAvoiderGame;
-import net.studio.estemon.assets.AssetDescriptors;
 import net.studio.estemon.screen.menu.MenuScreen;
 
 public class GameScreen implements Screen {

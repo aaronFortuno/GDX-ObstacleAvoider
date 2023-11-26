@@ -25,6 +25,7 @@ import net.studio.estemon.util.GdxUtils;
 import net.studio.estemon.util.ViewportUtils;
 import net.studio.estemon.util.debug.DebugCameraController;
 
+@SuppressWarnings("ALL")
 public class GameRenderer implements Disposable {
 
     // attributes

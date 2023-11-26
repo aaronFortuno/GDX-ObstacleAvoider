@@ -1,6 +1,5 @@
 package net.studio.estemon.screen.loading;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -11,7 +10,6 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import net.studio.estemon.ObstacleAvoiderGame;
 import net.studio.estemon.assets.AssetDescriptors;
 import net.studio.estemon.config.GameConfig;
-import net.studio.estemon.screen.game.GameScreen;
 import net.studio.estemon.screen.menu.MenuScreen;
 import net.studio.estemon.util.GdxUtils;
 
@@ -91,15 +89,6 @@ public class LoadingScreen extends ScreenAdapter {
     }
 
     // private methods
-    private void waitMillis(long millis) {
-        try {
-            Thread.sleep(millis);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
     private void update(float delta) {
         //waitMillis(400); // debug purposes
 

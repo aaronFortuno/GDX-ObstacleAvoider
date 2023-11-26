@@ -11,9 +11,9 @@ public class GameManager {
     public static final GameManager INSTANCE = new GameManager();
     private static final String HIGH_SCORE_KEY = "highscore";
     private static final String DIFFICULTY_KEY = "difficulty";
-    private Preferences PREFS;
+    private final Preferences PREFS;
     private int highscore;
-    private DifficultyLevel difficultyLevel = DifficultyLevel.MEDIUM;
+    private DifficultyLevel difficultyLevel;
 
     // SINGLETON, not instantiable
     private GameManager() {

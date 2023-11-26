@@ -4,7 +4,6 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-import net.studio.estemon.screen.game.GameScreen;
 import net.studio.estemon.screen.loading.LoadingScreen;
 
 public class ObstacleAvoiderGame extends Game {

@@ -18,13 +18,14 @@ import net.studio.estemon.entity.Background;
 import net.studio.estemon.entity.Obstacle;
 import net.studio.estemon.entity.Player;
 
+@SuppressWarnings("ALL")
 public class GameController {
 
     // constants
 
     // attributes
     private Player player;
-    private Array<Obstacle> obstacles = new Array<Obstacle>();
+    private final Array<Obstacle> obstacles = new Array<>();
     private Background background;
 
     private float obstacleTimer;
@@ -37,16 +38,10 @@ public class GameController {
     private Pool<Obstacle> obstaclePool;
     private Sound hit;
 
-    private ObstacleAvoiderGame game;
-    private AssetManager assetManager;
-
-    private final float startPlayerX = GameConfig.WORLD_WIDTH / 2 - (GameConfig.PLAYER_SIZE / 2); // set starting x position at center
-    private final float startPlayerY = 1 - GameConfig.PLAYER_SIZE / 2; // set starting y at bottom of the screen
-
+    private final AssetManager assetManager;
 
     // constructor
     public GameController(ObstacleAvoiderGame game) {
-        this.game = game;
         assetManager = game.getAssetManager();
         init();
     }
@@ -56,6 +51,10 @@ public class GameController {
         player = new Player();
 
         // initial player position
+        // set starting x position at center
+        float startPlayerX = GameConfig.WORLD_WIDTH / 2 - (GameConfig.PLAYER_SIZE / 2);
+        // set starting y at bottom of the screen
+        float startPlayerY = 1 - GameConfig.PLAYER_SIZE / 2;
         player.setPosition(startPlayerX, startPlayerY);
 
         // create obstacle pool
@@ -89,8 +88,6 @@ public class GameController {
 
             if (isGameOver()) {
                 GameManager.INSTANCE.updateHighscore(score);
-            } else {
-                // restart();
             }
         }
     }
@@ -119,12 +116,6 @@ public class GameController {
 
 
     // private methods
-    private void restart() {
-        obstaclePool.freeAll(obstacles);
-        obstacles.clear();
-        player.setPosition(startPlayerX, startPlayerY);
-    }
-
     private boolean isPlayerCollidingWithObstacle() {
         for (Obstacle obstacle : obstacles) {
             if (obstacle.isNotHit() && obstacle.isPlayerColliding(player)) {
@@ -165,9 +156,6 @@ public class GameController {
     private void createNewObstacle(float delta) {
         obstacleTimer += delta;
         if (obstacleTimer >= GameConfig.OBSTACLE_SPAWN_TIME) {
-            // if we want to create our obstacle completely inside world (not its center)
-            // float min = 0f;
-            // float max = GameConfig.WORLD_WIDTH - GameConfig.OBSTACLE_SIZE;
             float min = 0f - GameConfig.OBSTACLE_SIZE / 2;
             float max = GameConfig.WORLD_WIDTH - GameConfig.OBSTACLE_SIZE / 2;
             float obstacleX = MathUtils.random(min, max);
