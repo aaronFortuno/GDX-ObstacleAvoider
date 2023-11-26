@@ -1,10 +1,11 @@
 package net.studio.estemon.screen.menu;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.ui.ImageTextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import net.studio.estemon.ObstacleAvoiderGame;
@@ -21,15 +22,13 @@ public class MenuScreen extends MenuScreenBase {
     protected Actor createUi() {
         Table table = new Table();
         TextureAtlas gamePlayAtlas = assetManager.get(AssetDescriptors.GAMEPLAY_ATLAS);
-        TextureAtlas uiAtlas = assetManager.get(AssetDescriptors.UI_ATLAS);
 
         TextureRegion backgroundRegion = gamePlayAtlas.findRegion(RegionNames.BACKGROUND);
-        TextureRegion panelRegion = uiAtlas.findRegion(RegionNames.PANEL);
 
         table.setBackground(new TextureRegionDrawable(backgroundRegion));
 
         // play button
-        ImageTextButton playButton = new ImageTextButton("PLAY", skin);
+        TextButton playButton = new TextButton("PLAY", skin);
         playButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -37,7 +36,7 @@ public class MenuScreen extends MenuScreenBase {
             }
         });
         // highscore button
-        ImageTextButton highscoreButton = new ImageTextButton("HIGHSCORE", skin);
+        TextButton highscoreButton = new TextButton("HIGHSCORE", skin);
         highscoreButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -45,7 +44,7 @@ public class MenuScreen extends MenuScreenBase {
             }
         });
         // settings button
-        ImageTextButton settingsButton = new ImageTextButton("SETTINGS", skin);
+        TextButton settingsButton = new TextButton("SETTINGS", skin);
         settingsButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -53,18 +52,18 @@ public class MenuScreen extends MenuScreenBase {
             }
         });
         // quit button
-        ImageTextButton quitButton = new ImageTextButton("QUIT", skin);
+        TextButton quitButton = new TextButton("QUIT", skin);
         quitButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                // TODO
+                quit();
             }
         });
 
         // setup table
-        Table buttonTable = new Table();
+        Table buttonTable = new Table(skin);
         buttonTable.defaults().pad(20);
-        buttonTable.setBackground(new TextureRegionDrawable(panelRegion));
+        buttonTable.setBackground(RegionNames.PANEL);
 
         buttonTable.add(playButton).row();
         buttonTable.add(highscoreButton).row();
@@ -90,5 +89,9 @@ public class MenuScreen extends MenuScreenBase {
 
     private void showSettings() {
         game.setScreen(new SettingsScreen(game));
+    }
+
+    private void quit() {
+        Gdx.app.exit();
     }
 }
