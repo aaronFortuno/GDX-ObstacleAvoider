@@ -1,63 +1,35 @@
 package net.studio.estemon.screen.menu;
 
-import com.badlogic.gdx.Game;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.ScreenAdapter;
-import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageTextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
-import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.badlogic.gdx.utils.viewport.Viewport;
-
 import net.studio.estemon.ObstacleAvoiderGame;
 import net.studio.estemon.assets.AssetDescriptors;
-import net.studio.estemon.assets.AssetPaths;
 import net.studio.estemon.assets.RegionNames;
 import net.studio.estemon.common.GameManager;
 import net.studio.estemon.config.DifficultyLevel;
 import net.studio.estemon.config.GameConfig;
-import net.studio.estemon.util.GdxUtils;
 
-public class SettingsScreen extends ScreenAdapter {
+public class SettingsScreen extends MenuScreenBase {
 
-    private final ObstacleAvoiderGame game;
-    private final AssetManager assetManager;
-
-    private Viewport viewport;
-    private Stage stage;
-    private Skin skin;
     private Image checkmark;
 
 
     public SettingsScreen(ObstacleAvoiderGame game) {
-        this.game = game;
-        assetManager = game.getAssetManager();
+        super(game);
     }
 
     @Override
-    public void show() {
-        viewport = new FitViewport(GameConfig.HUD_WIDTH, GameConfig.HUD_HEIGHT);
-        stage = new Stage(viewport, game.getBatch());
-        skin = assetManager.get(AssetPaths.UI_SKIN);
-
-        Gdx.input.setInputProcessor(stage);
-
-        initUi();
-    }
-
-    private void initUi() {
+    protected Actor createUi() {
         Table table = new Table();
         table.defaults().pad(20);
 
@@ -124,37 +96,15 @@ public class SettingsScreen extends ScreenAdapter {
             }
         });
 
-        stage.addActor(background);
-        stage.addActor(label);
-        stage.addActor(easyButton);
-        stage.addActor(mediumButton);
-        stage.addActor(hardButton);
-        stage.addActor(checkmark);
-        stage.addActor(backButton);
+        table.addActor(background);
+        table.addActor(label);
+        table.addActor(easyButton);
+        table.addActor(mediumButton);
+        table.addActor(hardButton);
+        table.addActor(checkmark);
+        table.addActor(backButton);
 
-
-    }
-
-    @Override
-    public void render(float delta) {
-        GdxUtils.clearScreen();
-        stage.act();
-        stage.draw();
-    }
-
-    @Override
-    public void resize(int width, int height) {
-        viewport.update(width, height, true);
-    }
-
-    @Override
-    public void hide() {
-        dispose();
-    }
-
-    @Override
-    public void dispose() {
-        stage.dispose();
+        return table;
     }
 
     private void back() {

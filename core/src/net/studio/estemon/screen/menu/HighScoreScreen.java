@@ -27,32 +27,14 @@ import net.studio.estemon.common.GameManager;
 import net.studio.estemon.config.GameConfig;
 import net.studio.estemon.util.GdxUtils;
 
-public class HighScoreScreen extends ScreenAdapter {
-
-    private final ObstacleAvoiderGame game;
-    private final AssetManager assetManager;
-
-    private Viewport viewport;
-    private Stage stage;
-    private Skin skin;
+public class HighScoreScreen extends MenuScreenBase {
 
     public HighScoreScreen(ObstacleAvoiderGame game) {
-        this.game = game;
-        assetManager = game.getAssetManager();
+        super(game);
     }
 
     @Override
-    public void show() {
-        viewport = new FitViewport(GameConfig.HUD_WIDTH, GameConfig.HUD_HEIGHT);
-        stage = new Stage(viewport, game.getBatch());
-        skin = assetManager.get(AssetPaths.UI_SKIN);
-
-        Gdx.input.setInputProcessor(stage);
-
-        initUi();
-    }
-
-    private void initUi() {
+    protected Actor createUi() {
         Table table = new Table();
         TextureAtlas gamePlayAtlas = assetManager.get(AssetDescriptors.GAMEPLAY_ATLAS);
         TextureAtlas uiAtlas = assetManager.get(AssetDescriptors.UI_ATLAS);
@@ -98,29 +80,7 @@ public class HighScoreScreen extends ScreenAdapter {
         table.setFillParent(true);
         table.pack();
 
-        stage.addActor(table);
-    }
-    @Override
-    public void render(float delta) {
-        GdxUtils.clearScreen();
-
-        stage.act();
-        stage.draw();
-    }
-
-    @Override
-    public void resize(int width, int height) {
-        viewport.update(width, height, true);
-    }
-
-    @Override
-    public void hide() {
-        dispose();
-    }
-
-    @Override
-    public void dispose() {
-        stage.dispose();
+        return table;
     }
 
     private void back() {
