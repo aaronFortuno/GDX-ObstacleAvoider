@@ -1,8 +1,8 @@
 package net.studio.estemon.screen.menu;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
-import com.badlogic.gdx.assets.AssetDescriptor;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -10,12 +10,14 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageTextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
@@ -23,11 +25,10 @@ import net.studio.estemon.ObstacleAvoiderGame;
 import net.studio.estemon.assets.AssetDescriptors;
 import net.studio.estemon.assets.AssetPaths;
 import net.studio.estemon.assets.RegionNames;
-import net.studio.estemon.common.GameManager;
 import net.studio.estemon.config.GameConfig;
 import net.studio.estemon.util.GdxUtils;
 
-public class HighScoreScreen extends ScreenAdapter {
+public class SettingsScreen extends ScreenAdapter {
 
     private final ObstacleAvoiderGame game;
     private final AssetManager assetManager;
@@ -35,8 +36,10 @@ public class HighScoreScreen extends ScreenAdapter {
     private Viewport viewport;
     private Stage stage;
     private Skin skin;
+    private Image checkmark;
 
-    public HighScoreScreen(ObstacleAvoiderGame game) {
+
+    public SettingsScreen(ObstacleAvoiderGame game) {
         this.game = game;
         assetManager = game.getAssetManager();
     }
@@ -54,6 +57,8 @@ public class HighScoreScreen extends ScreenAdapter {
 
     private void initUi() {
         Table table = new Table();
+        table.defaults().pad(20);
+
         TextureAtlas gamePlayAtlas = assetManager.get(AssetDescriptors.GAMEPLAY_ATLAS);
         TextureAtlas uiAtlas = assetManager.get(AssetDescriptors.UI_ATLAS);
         BitmapFont font = assetManager.get(AssetDescriptors.FONT);
@@ -61,20 +66,46 @@ public class HighScoreScreen extends ScreenAdapter {
         TextureRegion backgroundRegion = gamePlayAtlas.findRegion(RegionNames.BACKGROUND);
         TextureRegion panelRegion = uiAtlas.findRegion(RegionNames.PANEL);
 
-        Label.LabelStyle labelStyle = new Label.LabelStyle(font, Color.RED);
+        Image background = new Image(backgroundRegion);
 
-        // background
-        table.setBackground(new TextureRegionDrawable(backgroundRegion));
+        Label.LabelStyle labelStyle = new Label.LabelStyle(font, Color.WHITE);
+        Label label = new Label("DIFFICULTY", labelStyle);
+        label.setPosition(GameConfig.HUD_WIDTH / 2, GameConfig.HUD_HEIGHT / 2 + 180, Align.center);
 
-        // highscore text
-        Label highScoreText = new Label("HIGHSCORE", labelStyle);
+        final ImageTextButton easyButton = new ImageTextButton("EASY", skin);
+        easyButton.setPosition(GameConfig.HUD_WIDTH / 2, GameConfig.HUD_HEIGHT / 2 + 90, Align.center);
+        easyButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                checkmark.setY(easyButton.getY() + 25);
+            }
+        });
 
-        // highscore label
-        String highscoreString = GameManager.INSTANCE.getHighScoreString();
-        Label highScoreLabel = new Label(highscoreString, labelStyle);
+        final ImageTextButton mediumButton = new ImageTextButton("MEDIUM", skin);
+        mediumButton.setPosition(GameConfig.HUD_WIDTH / 2, GameConfig.HUD_HEIGHT / 2, Align.center);
+        mediumButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                checkmark.setY(mediumButton.getY() + 25);
+            }
+        });
 
-        // back button
+        final ImageTextButton hardButton = new ImageTextButton("HARD", skin);
+        hardButton.setPosition(GameConfig.HUD_WIDTH / 2, GameConfig.HUD_HEIGHT / 2 - 90, Align.center);
+        hardButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                checkmark.setY(hardButton.getY() + 25);
+            }
+        });
+
+        TextureRegion checkmarkRegion = uiAtlas.findRegion(RegionNames.CHECKMARK);
+        checkmark = new Image(new TextureRegionDrawable(checkmarkRegion));
+        checkmark.setPosition(mediumButton.getX() + 50, mediumButton.getY() + 40, Align.center);
+        checkmark.setColor(Color.DARK_GRAY);
+
         ImageTextButton backButton = new ImageTextButton("BACK", skin);
+        backButton.setPosition(GameConfig.HUD_WIDTH / 2, GameConfig.HUD_HEIGHT / 2 - 180, Align.center);
         backButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -82,28 +113,20 @@ public class HighScoreScreen extends ScreenAdapter {
             }
         });
 
-        // setup tables
-        Table contentTable = new Table();
-        contentTable.defaults().pad(20);
-        contentTable.setBackground(new TextureRegionDrawable(panelRegion));
+        stage.addActor(background);
+        stage.addActor(label);
+        stage.addActor(easyButton);
+        stage.addActor(mediumButton);
+        stage.addActor(hardButton);
+        stage.addActor(checkmark);
+        stage.addActor(backButton);
 
-        contentTable.add(highScoreText).row();
-        contentTable.add(highScoreLabel).row();
-        contentTable.add(backButton);
 
-        contentTable.center();
-
-        table.add(contentTable);
-        table.center();
-        table.setFillParent(true);
-        table.pack();
-
-        stage.addActor(table);
     }
+
     @Override
     public void render(float delta) {
         GdxUtils.clearScreen();
-
         stage.act();
         stage.draw();
     }
@@ -126,5 +149,4 @@ public class HighScoreScreen extends ScreenAdapter {
     private void back() {
         game.setScreen(new MenuScreen(game));
     }
-
 }

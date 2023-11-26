@@ -60,7 +60,7 @@ public class MenuScreen extends ScreenAdapter {
         table.setBackground(new TextureRegionDrawable(backgroundRegion));
 
         // play button
-        ImageTextButton playButton = createButton("PLAY");
+        ImageTextButton playButton = new ImageTextButton("PLAY", skin);
         playButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -68,7 +68,7 @@ public class MenuScreen extends ScreenAdapter {
             }
         });
         // highscore button
-        ImageTextButton highscoreButton = createButton("HIGHSCORE");
+        ImageTextButton highscoreButton = new ImageTextButton("HIGHSCORE", skin);
         highscoreButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -76,7 +76,7 @@ public class MenuScreen extends ScreenAdapter {
             }
         });
         // settings button
-        ImageTextButton settingsButton = createButton("SETTINGS");
+        ImageTextButton settingsButton = new ImageTextButton("SETTINGS", skin);
         settingsButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -84,7 +84,7 @@ public class MenuScreen extends ScreenAdapter {
             }
         });
         // quit button
-        ImageTextButton quitButton = createButton("QUIT");
+        ImageTextButton quitButton = new ImageTextButton("QUIT", skin);
         quitButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -144,12 +144,6 @@ public class MenuScreen extends ScreenAdapter {
     }
 
     private void showSettings() {
-
-    }
-
-    private ImageTextButton createButton(String buttonText) {
-        ImageTextButton button = new ImageTextButton(buttonText, skin);
-        button.setSize(100, 50);
-        return button;
+        game.setScreen(new SettingsScreen(game));
     }
 }

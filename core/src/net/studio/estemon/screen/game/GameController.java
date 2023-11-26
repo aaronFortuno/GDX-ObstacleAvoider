@@ -7,6 +7,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Pool;
 import com.badlogic.gdx.utils.Pools;
 
+import net.studio.estemon.common.GameManager;
 import net.studio.estemon.config.DifficultyLevel;
 import net.studio.estemon.config.GameConfig;
 import net.studio.estemon.entity.Background;
@@ -76,7 +77,7 @@ public class GameController {
             lives--;
 
             if (isGameOver()) {
-
+                GameManager.INSTANCE.updateHighscore(score);
             } else {
                 // restart();
             }
