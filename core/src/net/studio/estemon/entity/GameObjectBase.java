@@ -9,10 +9,10 @@ public abstract class GameObjectBase {
     private float y;
     private float width = 1;
     private float height = 1;
-    private Circle bounds;
+    private final Circle bounds;
 
     public GameObjectBase(float boundsRadius) {
-        bounds = new Circle(x, y, boundsRadius);
+        bounds = new Circle(x, y, boundsRadius * 3 / 4);
     }
 
     public void drawDebug(ShapeRenderer renderer) {
